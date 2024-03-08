@@ -17,19 +17,19 @@ public class LoginManager : MonoBehaviour
         notify.text = "";
     }
 
-    private bool CheckInput(string ID, string password)
+    private bool CheckInput(string id, string password)
     {
-        if(ID == "" || password == "")
+        if(id == "" || password == "")
         {
             notify.text = "아이디 또는 패스워드를 입력하세요.";
-
+            ID.text = "";
+            Password.text = "";
             return false;
         }
 
         else
         {
             return true;
-
         }
 
     }
@@ -46,11 +46,16 @@ public class LoginManager : MonoBehaviour
         {
             PlayerPrefs.SetString(ID.text,Password.text);
             notify.text = "계정생성이 완료되었습니다.";
+            ID.text = "";
+            Password.text = "";
+
         }
 
         else
         {
             notify.text = "이미 존재하는 계정입니다.";
+            ID.text = "";
+            Password.text = "";
         }
 
     }
@@ -73,6 +78,8 @@ public class LoginManager : MonoBehaviour
         else
         {
             notify.text = "입력하신 아이디와 패스워드가 불일치 합니다.";
+            ID.text = "";
+            Password.text = "";
         }
     }
 

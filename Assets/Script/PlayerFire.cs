@@ -14,6 +14,14 @@ public class PlayerFire : MonoBehaviour
         Sniper,
 
     }
+    public GameObject weapon1_Rifle_Image;
+    public GameObject weapon2_Sniper_Image;
+    public GameObject weaponR_Granade;
+    public GameObject weaponR_Zoom;
+    public GameObject Rifle_CrossHair;
+    public GameObject Sniper_CrossHair;
+
+
     public TextMeshProUGUI weapon_mode_text;
     private WeaponMode weaponMode;
     private bool ZoomMode = false;
@@ -32,6 +40,14 @@ public class PlayerFire : MonoBehaviour
     void Start()
     {
         weaponMode = WeaponMode.Normal;
+
+        weapon1_Rifle_Image.gameObject.SetActive(true);
+        Rifle_CrossHair.gameObject.SetActive(true);
+        weaponR_Granade.gameObject.SetActive(true);
+        weapon2_Sniper_Image.gameObject.SetActive(false);
+        Sniper_CrossHair.gameObject.SetActive(false);
+        weaponR_Zoom.gameObject.SetActive(false);
+
         ps = bulletParticle.GetComponent<ParticleSystem>();
         anim = GetComponentInChildren<Animator>();
 
@@ -127,6 +143,13 @@ public class PlayerFire : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            weapon1_Rifle_Image.gameObject.SetActive(true);
+            Rifle_CrossHair.gameObject.SetActive(true);
+            weaponR_Granade.gameObject.SetActive(true);
+            weapon2_Sniper_Image.gameObject.SetActive(false);
+            Sniper_CrossHair.gameObject.SetActive(false);
+            weaponR_Zoom.gameObject.SetActive(false);
+
             weaponMode = WeaponMode.Normal;
             weapon_mode_text.text = "Normal Mode";
             Camera.main.fieldOfView = 60f;
@@ -134,6 +157,14 @@ public class PlayerFire : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+
+            weapon1_Rifle_Image.gameObject.SetActive(false);
+            Rifle_CrossHair.gameObject.SetActive(false);
+            weaponR_Granade.gameObject.SetActive(false);
+            weapon2_Sniper_Image.gameObject.SetActive(true);
+            Sniper_CrossHair.gameObject.SetActive(true);
+            weaponR_Zoom.gameObject.SetActive(true);
+
             weaponMode = WeaponMode.Sniper;
             weapon_mode_text.text = "Sniper Mode";
         }
@@ -142,6 +173,10 @@ public class PlayerFire : MonoBehaviour
     
     IEnumerator ShootEffectOn(float duration)
     {
+        for(int i = 0; i < eff_flash.Length; i++)
+        {
+            eff_flash[i].SetActive(false);
+        }
 
         int num = Random.Range(0, eff_flash.Length);
         eff_flash[num].SetActive(true);
