@@ -17,9 +17,11 @@ public class PlayerFire : MonoBehaviour
     public GameObject weapon1_Rifle_Image;
     public GameObject weapon2_Sniper_Image;
     public GameObject weaponR_Granade;
+    
     public GameObject weaponR_Zoom;
     public GameObject Rifle_CrossHair;
     public GameObject Sniper_CrossHair;
+    public GameObject Sniper_ZoomMode_CrossHair;
 
 
     public TextMeshProUGUI weapon_mode_text;
@@ -47,6 +49,7 @@ public class PlayerFire : MonoBehaviour
         weapon2_Sniper_Image.gameObject.SetActive(false);
         Sniper_CrossHair.gameObject.SetActive(false);
         weaponR_Zoom.gameObject.SetActive(false);
+        Sniper_ZoomMode_CrossHair.gameObject.SetActive(false);
 
         ps = bulletParticle.GetComponent<ParticleSystem>();
         anim = GetComponentInChildren<Animator>();
@@ -64,8 +67,19 @@ public class PlayerFire : MonoBehaviour
         {
             StartCoroutine(ShootEffectOn(0.05f));
             AudioSource source = GameObject.Find("effect").gameObject.GetComponent<AudioSource>();
-            AudioClip clip = Resources.Load<AudioClip>("Sounds/M4A1");
-            source.PlayOneShot(clip);
+            if(weaponMode == WeaponMode.Normal)
+            {
+                AudioClip clip = Resources.Load<AudioClip>("Sounds/M4A1");
+                source.PlayOneShot(clip);
+            }
+
+            else if (weaponMode == WeaponMode.Sniper)
+            {
+                AudioClip clip = Resources.Load<AudioClip>("Sounds/shotS/rifle");
+                source.PlayOneShot(clip);
+            }
+           
+            
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward); //발사될 위치, 발사 방향 
             Debug.DrawRay(Camera.main.transform.position, ray.direction * 100.0f, Color.red, 1.0f);
             RaycastHit hitinfo = new RaycastHit(); //레이가 부딪힌 대상의 정보를 저장할 구조체 변수 
@@ -120,6 +134,8 @@ public class PlayerFire : MonoBehaviour
                     if (!ZoomMode)
                     {
                         Camera.main.fieldOfView = 15f; // 시야각 15도
+                        Sniper_CrossHair.gameObject.SetActive(false);
+                        Sniper_ZoomMode_CrossHair.gameObject.SetActive(true);
                         ZoomMode = true;
                         
                     }
@@ -127,6 +143,8 @@ public class PlayerFire : MonoBehaviour
                     else
                     {
                         Camera.main.fieldOfView = 60f;
+                        Sniper_CrossHair.gameObject.SetActive(true);
+                        Sniper_ZoomMode_CrossHair.gameObject.SetActive(false);
                         ZoomMode = false;
                         
                     }
@@ -143,6 +161,11 @@ public class PlayerFire : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            if (Sniper_ZoomMode_CrossHair.activeSelf)
+            {
+                Sniper_ZoomMode_CrossHair.gameObject.SetActive(false);
+            }
+            
             weapon1_Rifle_Image.gameObject.SetActive(true);
             Rifle_CrossHair.gameObject.SetActive(true);
             weaponR_Granade.gameObject.SetActive(true);
