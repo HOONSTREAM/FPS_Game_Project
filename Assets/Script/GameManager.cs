@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
         gstate = GameState.Ready;
         gametext = gamelabel.GetComponent<Text>();
         gametext.text = "Ready ...";
+        AudioSource source = GameObject.Find("effect").gameObject.GetComponent<AudioSource>();
+        AudioClip clip = Resources.Load<AudioClip>("Sounds/FPS/reloadSound");
+        source.PlayOneShot(clip);
         gametext.color = new Color32(255, 185, 0, 255);
 
         StartCoroutine(ReadyToStart());
